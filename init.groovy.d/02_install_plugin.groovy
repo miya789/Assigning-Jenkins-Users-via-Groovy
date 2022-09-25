@@ -1,8 +1,7 @@
-import jenkins.model.*
+def plugins   = ["role-strategy"]
+// def plugins   = ["matrix-auth"]
 
-def instance  = Jenkins.getInstance()
-def plugins   = ["matrix-auth"]
-
+def instance  = jenkins.model.Jenkins.getInstance()
 pm = instance.getPluginManager()
 uc = instance.getUpdateCenter()
 uc.updateAllSites()

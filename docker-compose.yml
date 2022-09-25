@@ -1,0 +1,31 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile-role
+    #   dockerfile: Dockerfile-matrix
+    container_name: jenkins-container
+    ports:
+      - 8080:8080
+    user: jenkins:jenkins
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+      - type: bind
+        source: ./init.groovy.d/02_install_plugin.groovy
+        target: /usr/share/jenkins/ref/init.groovy.d/02_install_plugin.groovy
+      - type: bind
+        source: ./init.groovy.d/03_create_account.groovy
+        target: /usr/share/jenkins/ref/init.groovy.d/03_create_account.groovy
+      - type: bind
+        # source: ./init.groovy.d/05_role_assign_role_addPermission.groovy
+        # source: ./init.groovy.d/05_role_assign_role_addPermissionGroup.groovy
+        source: ./init.groovy.d/05_role_assign_role_removePermissionGroup.groovy
+        target: /usr/share/jenkins/ref/init.groovy.d/05_role_assign_role.groovy
+      # - type: bind
+      #   source: ./init.groovy.d/05_matrix_assign_permissions.groovy
+      #   target: /usr/share/jenkins/ref/init.groovy.d/05_matrix_assign_permissions.groovy
+    restart: always
+volumes:
+  jenkins_home:
